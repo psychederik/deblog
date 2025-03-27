@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-function Article({ title, date, author }) {
+function BlogPost({ title, date, author }) {
    return (
       <NavLink
          to={`./post/${title}`}
@@ -16,4 +16,4 @@ function Article({ title, date, author }) {
    );
 }
 
-export default Article;
+export default BlogPost;
