@@ -1,9 +1,10 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function BlogPost({ title, date, author }) {
+function BlogPost({ title, date, slug, author }) {
+   console.log(slug);
    return (
-      <NavLink
-         to={`./post/${title}`}
+      <Link
+         to={`/blog/${slug}`}
          className="flex border-b border-white/10 pt-15 pb-5"
       >
          <div className="flex flex-col gap-1">
@@ -12,7 +13,7 @@ function BlogPost({ title, date, author }) {
                {date} • {author}
             </p>
          </div>
-      </NavLink>
+      </Link>
    );
 }
 

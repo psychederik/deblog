@@ -1,22 +1,23 @@
 import BlogPost from '../BlogPost';
-import MarkdownComponent from '../MarkdownComponent';
 
-function Blog() {
+function Blog({ articles }) {
    return (
-      <section id="blog" className="pt-25">
+      <section id="blog" className="pt-10">
          <h1 className="font-black uppercase text-4xl text-[#A56EB6] pb-2">
             Dev Blog
          </h1>
          <p className="text-xl opacity-30">Articles</p>
-         <MarkdownComponent />
 
          <div className="overflow-y-scroll no-scrollbar max-w-[80%] max-h-[600px]">
-            <BlogPost
-               title={'Git Cheat Sheet'}
-               date={'March 21, 2025'}
-               author={'Derik Boghozian'}
-               // slug={`blog/${slug}`}
-            />
+            {articles.map((article) => (
+               <BlogPost
+                  key={article.metadata.slug}
+                  title={article.metadata.title}
+                  date={article.metadata.date}
+                  author={article.metadata.author}
+                  slug={article.metadata.slug}
+               />
+            ))}
          </div>
       </section>
    );

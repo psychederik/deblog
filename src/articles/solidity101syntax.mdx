@@ -1,0 +1,362 @@
+export const metadata = {
+   title: 'Solidity 101: Syntax+',
+   date: '2025-03-28',
+   author: 'Derik Boghozian',
+   slug: 'solidity-101-syntax',
+};
+
+## Pragma
+
+```solidity
+pragma solidity ^0.8.4;
+```
+
+Here we use the keywords `pragma solidity` to specify the version of the Solidity compiler to be used to compile the code.
+
+We use `^0.a.b` to indicate code in the current file needs solidity `>=0.a.b` and `<0.(a+1).0`
+
+```solidity
+// Here it says we need version >=0.7.5, but <0.8.0
+pragma solidity ^0.7.5;
+```
+
+In this example, `^0.7.5` either accepts versions 0.7.5 through 0.8.0. The up-arrow essentially adds 1 to the middle decimal number and makes the last decimal a zero, using that range of Solidity compiler versions.
+
+## Contract
+
+In Solidity, a `contract` is a collection of code (function) and data (state) that resides at a specific address on the Ethereum blockchain.
+
+```solidity
+// Here we defined a contract called Name
+contract Name{ }
+```
+
+To define a contract, we use the keyword `contract` followed by the name of the contract.
+
+Contracts in Solidity are similar to classes in OOP languages.
+
+Solidity source code files (.sol) could contain one or more contract.
+
+## Variable Types - `int`, `uint` & `bool`
+
+Variables are declared with their type, followed by the variable name.
+
+```solidity
+// This is a variable of 'integer' type
+int basic_price;
+int bank_account_balance = -50;
+
+// The value for `uint` could only be positive
+uint only_positive = 20
+```
+
+`int` = signed integer representation
+
+`uint` = unsigned integer variable
+
+A bit is a unit. It represents a single digit in binary representation: 0 or 1.
+
+`uint` can specify how many bits it stores, like this: `uint128`
+
+The number of bits must be a multiplier of 8
+
+```solidity
+// Documentation
+uint8 a;
+int256 b;
+int128 c;
+uint127 d; // This is invalid; 127 isn't a multiplier of 8
+```
+
+`uint` and `int` are acronyms of `uint256` and `int256` (default number of bits is 256)
+
+Boolean (bool variable type) uses the same operations as Javascript:
+Negation `!` And `&&` Or `||` Equality `==` Inequality `!=`
+
+## Variable Types - `address` & `address payable`
+
+An `address` is an identifier for an account or a smart contract on the Ethereum blockchain. It’s a number in hexadecimal.
+
+To define an `address`, we have a variable name after the type.
+
+```solidity
+// Definition | Documentation
+address address1 = 0x35701d003AF0e05D539c6c71bF9421728426b8A0;
+//This is a conversion from a hexadecimal number to a valid address
+address address2 = address(0x123)//address2 = 0x0000000000000000000000000000000000000123
+
+// Balance is in `uint` because it can never be negative
+uint balance = address1.balance;
+
+// transfer 5 Wei from this contract to address1
+address1.transfer(5);
+```
+
+`balance` allows contracts to check how much balance is left in one address.
+
+`transfer` allows contracts to transfer money from itself to another `address`.
+
+The amount transferred is in unit _Wei_ (1Eth = 10^18 _Wei_)
+
+The `address payable` type in Solidity is used to represent Ethereum addresses that you want to send Ether to.
+
+We can use `address payable` variables as `address` type variables [implicit conversion]
+
+However, to convert from `address` to `address payable` we need [explicit conversion] using the keyword `payable`
+
+```solidity
+address payable add = payable(0x5B38Da6a701c568545dCfcB03FcB875f56beddC4);
+address b = add; //implicit converting from address payable to address
+address payable d = payable(b); // explicit conversion with payable()
+```
+
+## Functions - Input, Output and Alternative Output
+
+Function parameters (input):
+
+```solidity
+// Documentation
+// Here we have two inputs, a, and b, both are signed integers int
+function sum(int a, int b) {
+  // function body
+}
+```
+
+Define output (prop-type) of a function using `returns` after the parentheses
+
+```solidity
+// this function returns one signed integer
+function sum(int a, int b) returns(int){
+  // return the number
+	return 3;
+}
+```
+
+Returning **multiple** values from a function using a tuple
+
+```solidity
+function getValues() public pure returns (uint256, string memory) {
+        uint256 intValue = 42;
+        string memory stringValue = "Hello, world!";
+        return (intValue, stringValue);
+    }
+```
+
+Alternative way to return outputs without explicitly using `return`
+
+```solidity
+function calculateSquare(int x) returns (int result) {
+				result = x * x;
+}
+```
+
+## Function Scope
+
+`public` functions (global scope)
+
+```solidity
+// To define a public variable or public function
+// use the keyword `public` before variable name or after params
+uint public a;
+// or
+function aa() public {
+			// function body
+}
+```
+
+`public` functions and variables allow both external and internal access, making them essential for user interaction, contract interoperability, and dApp development. However, they should be used carefully for security reasons.
+
+`private` functions
+
+```solidity
+uint private a;
+// or
+function aa() private {
+			// function body
+}
+```
+
+`private` functions and variables can only be accessed within the contract
+
+Scopes other than `public` and `private` :
+
+**`internal`** functions/variables are accessible **only within the contract and derived (child) contracts**; ideal for inheritance.
+
+```solidity
+   // Internal Function
+   function aa() internal{}
+
+   aa(); // Function call
+
+   // Internal Variable
+   uint256 internal internalVar;
+```
+
+**`external`** functions are callable **only from outside the contract** (not internally), optimizing gas for public-facing interactions.
+
+```solidity
+   // External Function
+   function aa() external{}
+
+   this.aa(); // the `this` keyword must be added when used in this contract
+```
+
+`external` Metaphor:
+
+`external` is like a public library, accessible to all, but only during opening hours. Anyone can read, but they cannot conduct private activities in the library. (Only `external` functions can be used).
+
+## Mapping (key-value pairs)
+
+A `mapping` in Solidity is a **key-value data** structure. `mapping` allows efficient storage and retrieval of data. With `mapping`, each key corresponds to a **unique value**.
+
+```solidity
+mapping(address => uint) balances;
+```
+
+This code creates a `mapping` named `balances`, which associates an `address` with a `uint` (unsigned integer). It is typically used to store and track balances of users in a contract, such as token holdings.
+
+```solidity
+// Assigning a new value to your mapping variable is the same as
+// Updating an existing `mapping` variable
+myMapping[420] = true;
+```
+
+`mapping` is similar to a Javascript object, as they both store key-value pairs, but there are a few key differences.
+
+-  **Mappings in Solidity**
+   -  Keys do not have a fixed list; they are **implicitly initialized** (default to `0` for uint values).
+   -  Cannot be **iterated** over or directly retrieved as a whole.
+   -  Mainly used for **efficient lookups** (e.g., tracking balances).
+-  **JS Objects**
+   -  Keys can be iterated over (`Object.keys(obj)` or `for...in`).
+   -  Can store multiple data types (`{ "name": "Alice", "balance": 100 }`).
+
+In short, mappings work like JS objects **for key-value storage**, but they lack enumeration and are more restrictive.
+
+Querying a `mapping` in Solidity refers to accessing the value associated with a specific key (usually and address or identifier) within the `mapping` data structure to retrieve information to perform actions based on that value.
+
+Below, on line 1, we create a mapping called `balance` with an `address` as a key and `uint` as a value.
+
+On line 2, we create a `uint` variable called `b` and store the value associated with the key `address(0x123)` in the `balance` mapping
+
+```solidity
+// Documentation
+mapping(address => uint) public balance;
+uint b = balance[address(0x123)]; // address(0x123) is the key
+```
+
+`balance[address(0x123)]`: This is the syntax to query the mapping. You provide a key inside square brackets `[ ]`, and it returns the associated value.
+
+When you write `balance[address(0x123)]`, you’re asking, “What’s the value stored in the `balance` mapping for the key `address(0x123)`?”
+
+Deleting refers to the removal of a **key-value** pair from a `mapping`, erasing the association between a key and its corresponding value.
+
+```solidity
+delete balance[address(0x123)];
+```
+
+## Classification
+
+A state variable in Solidity is a persistent data **storage location** within a smart contract that maintains its value across **multiple** function calls and transactions.
+
+-  **State Variable**: A variable stored permanently on the blockchain, part of a smart contract’s state. It’s declared outside functions and persists between transactions.
+-  **Key Point**: Changes to state variables are recorded on-chain and cost gas.
+
+```solidity
+contract Example {
+    uint public count = 10; // State variable `count` stored on the blockchain
+    function increment() public {
+        count += 1; // Modifies the state variable
+    }
+}
+```
+
+`count` is a state variable. It’s initialized to 10, stored on-chain, and can be updated by the `increment` function, with each change persisting across calls.
+
+Local variables are variables defined inside of functions. They store values within a program’s function temporarily.
+
+-  **Local Variable**: A variable declared inside a function, stored temporarily in memory or stack, not on the blockchain. It exists only during the function’s execution.
+-  **Key Point**: Changes to local variables aren’t persisted on-chain and don’t cost gas for storage.
+
+```solidity
+contract Example {
+    function add(uint a) public pure returns (uint) {
+        uint b = 5; // Local variable 'b' exists only in this function
+        return a + b;
+    }
+}
+```
+
+`b` is a local variable. It’s initialized to 5, used within `add`, and discarded after the function finishes—no blockchain storage.
+
+A pure function in Solidity is a function that doesn’t modify the contract’s states, access external contracts or read the state of the blockchain; it only performs computations on its input parameters and returns a computed result.
+
+```solidity
+function add() public pure {
+  //function body
+}
+```
+
+A view function reads state variables but doesn’t write to them.
+
+```solidity
+// Documentation
+function getCount() public view returns (uint) {
+        return count; // Reads `count` without changing it
+}
+
+// Use `virtual` if you expect inheritance and overrides
+function getCount() public view virtual returns (uint) {
+        return count; // Reads 'count', overridable in child contracts
+}
+```
+
+## Constructor
+
+A constructor in Solidity is a special function executed **only once** during the deployment of a smart contract to **initialize its state variables** and perform setup tasks. If a constructor is not defined, an empty constructor that does nothing will be created by Solidity when deploying the contract.
+
+```solidity
+constructor(int a, bool b) {
+  //function body
+}
+```
+
+Constructors don’t have names because there is only one. They also don’t have `returns` .
+
+## Error Handling: Require
+
+Require checks a condition; if it fails, it reverts the transaction and returns an error message (optional). It’s used for validation. Ensures conditions (e.g., inputs, permissions) are met before proceeding, saving gas by stopping execution early on failure.
+
+```solidity
+contract Example {
+    uint public count = 10;
+		// Place `require` at the start of functions to enforce rules
+    function increment(uint amount) public {
+        require(amount > 0, "Amount must be positive"); // Checks condition
+        count += amount; // Proceeds only if true
+    }
+}
+```
+
+`require(amount > 0, "Amount must be positive")` ensures `amount` isn’t zero. If false, the transaction reverts with the message “Amount must be positive”; otherwise, `count` increases.
+
+## Special Variable: `msg.sender`
+
+`msg.sender` is a built-in global variable in Solidity that represents the address of the account (or contract) calling the current function. `msg.sender` identifies “who” triggered the function, often used for access control or tracking interactions. The **type** of `msg.sender` is `address`.
+
+```solidity
+contract Example {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender; // Sets owner to the deployer’s address
+    }
+
+    function update() public {
+        require(msg.sender == owner, "Only owner"); // Restricts to owner
+        // Function logic here
+    }
+}
+```
+
+`msg.sender` in the constructor captures the deployer’s address (e.g., 0x123...). In `update`, it checks if the caller matches `owner`, restricting access.

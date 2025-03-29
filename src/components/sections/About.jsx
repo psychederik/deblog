@@ -3,7 +3,7 @@ import React from 'react';
 function About() {
    return (
       <section id="about" className="flex flex-col">
-         <h1 className="font-black uppercase text-4xl text-[#A56EB6] pt-20">
+         <h1 className="font-black uppercase text-4xl text-[#A56EB6] pt-10">
             About
          </h1>
          <div className="flex flex-col gap-5 pt-10">

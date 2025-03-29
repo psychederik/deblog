@@ -7,7 +7,7 @@ function Header() {
    };
 
    return (
-      <header className="flex justify-center items-center px-40 pt-10">
+      <header className="flex justify-center content-center items-center px-40 min-h-40">
          <Link
             className="mr-auto px-5 py-5 bg-[#659EA9] text-4xl font-black text-white rounded-xl"
             to="/"
