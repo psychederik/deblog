@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { MDXProvider } from '@mdx-js/react';
 import Layout from './components/Layout';
 import Home from './components/sections/Home';
 import Blog from './components/sections/Blog';
@@ -27,8 +28,9 @@ function App() {
       };
       importArticles();
    }, []);
+
    return (
-      <>
+      <MDXProvider>
          <BrowserRouter>
             <Routes>
                <Route path="/" element={<Layout />}>
@@ -44,7 +46,7 @@ function App() {
                </Route>
             </Routes>
          </BrowserRouter>
-      </>
+      </MDXProvider>
    );
 }
 

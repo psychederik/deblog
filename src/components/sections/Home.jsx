@@ -6,10 +6,10 @@ function Home() {
       <section className="flex justify-center max-h-screen">
          <div id="home" className="flex justify-center items-center pt-40">
             <div className="flex flex-col">
-               <p className="text-xl font-light leading-10 text-white mb-2 uppercase tracking-widest">
-                  Derik's Coding Blog
+               <p className="text-xl font-light leading-10 text-white mb-3 uppercase tracking-widest">
+                  psycheDerik's Coding Blog
                </p>
-               <h1 className="text-6xl font-bold mb-4 pb-5">
+               <h1 className="!text-white text-6xl font-bold mb-4 pb-5">
                   Learning to Teach,
                   <br /> Teaching to Learn.
                </h1>
