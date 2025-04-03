@@ -3,21 +3,23 @@ import BlogPost from '../BlogPost';
 function Blog({ articles }) {
    return (
       <section id="blog" className="pt-10">
-         <h1 className="font-black uppercase text-4xl text-[#A56EB6] pb-2">
-            Dev Blog
-         </h1>
-         <p className="text-xl opacity-30">Articles</p>
+         <div className="lg:mx-40 md:mx-20 mx-5">
+            <h1 className="font-black uppercase text-4xl text-[#A56EB6] pb-2">
+               Dev Blog
+            </h1>
+            <p className="text-xl opacity-30">Articles</p>
 
-         <div className="overflow-y-scroll no-scrollbar max-w-[80%] max-h-[600px]">
-            {articles.map((article) => (
-               <BlogPost
-                  key={article.metadata.slug}
-                  title={article.metadata.title}
-                  date={article.metadata.date}
-                  author={article.metadata.author}
-                  slug={article.metadata.slug}
-               />
-            ))}
+            <div className="overflow-y-scroll no-scrollbar max-w-[80%] max-h-[600px]">
+               {articles.map((article) => (
+                  <BlogPost
+                     key={article.metadata.slug}
+                     title={article.metadata.title}
+                     date={article.metadata.date}
+                     author={article.metadata.author}
+                     slug={article.metadata.slug}
+                  />
+               ))}
+            </div>
          </div>
       </section>
    );
@@ -26,14 +28,11 @@ function Blog({ articles }) {
 export default Blog;
 
 {
-   {
-      /* <BlogPost
+   /* <BlogPost
    title={'Git Cheat Sheet'}
    date={'March 21, 2025'}
    author={'Derik Boghozian'}
 /> */
-   }
-
    /* <BlogPost
    title={'A Git And GitHub Tutorial For The Very Beginner'}
    date={'March 19, 2025'}
